@@ -4,13 +4,10 @@ resource "aws_lb" "application_load_balancer" {
   internal                   = false
   load_balancer_type         = "application"
   security_groups            = [aws_security_group.alb_security_group.id]
-  subnets                    = [
-    aws_subnet.public_subnet_az1.id, 
-    aws_subnet.public_subnet_az2.id
-  ]
+  subnets                    = [aws_subnet.public_subnet_az1.id, aws_subnet.public_subnet_az2.id]
   enable_deletion_protection = false
 
-  tags   = {
+  tags = {
     Name = "${var.project_name}-${var.environment}-alb"
   }
 }
@@ -26,7 +23,7 @@ resource "aws_lb_target_group" "alb_target_group" {
   health_check {
     healthy_threshold   = 5
     interval            = 30
-    matcher             = "200,301,302" #301,302 is for when we redirect traffic to https
+    matcher             = "200,301,302"
     path                = "/"
     port                = "traffic-port"
     protocol            = "HTTP"
@@ -54,11 +51,11 @@ resource "aws_lb_listener" "alb_http_listener" {
 
 # create a listener on port 443 with forward action
 resource "aws_lb_listener" "alb_https_listener" {
-  load_balancer_arn  = aws_lb.application_load_balancer.arn
-  port               = 443
-  protocol           = "HTTPS"
-  ssl_policy         = "ELBSecurityPolicy-2016-08"
-  certificate_arn    = aws_acm_certificate.acm_certificate.arn
+  load_balancer_arn = aws_lb.application_load_balancer.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = "arn:aws:acm:us-east-1:194722419096:certificate/a9f49a83-e499-44fd-af97-87324ee88d8e"
 
   default_action {
     type             = "forward"
