@@ -1,5 +1,5 @@
-module "backend" {
-  source = "./backend"
+module "components" {
+  source = "./components"
 
   # Global variables
   region       = var.region
@@ -23,25 +23,8 @@ module "backend" {
   architecture = var.architecture
   image_name   = var.image_name
   image_tag    = var.image_tag
-}
 
-module "frontend" {
-  source = "./frontend"
-  # Global variables
-
-  region       = var.region
-  project_name = var.project_name
-  environment  = var.environment
-}
-
-module "networking" {
-  source = "./networking"
-
-  # Global variables
-  region       = var.region
-  project_name = var.project_name
-  environment  = var.environment
-
+  # vpc variables
   vpc_cidr                     = var.vpc_cidr
   public_subnet_az1_cidr       = var.public_subnet_az1_cidr
   public_subnet_az2_cidr       = var.public_subnet_az2_cidr
@@ -49,5 +32,4 @@ module "networking" {
   private_app_subnet_az2_cidr  = var.private_app_subnet_az2_cidr
   private_data_subnet_az1_cidr = var.private_data_subnet_az1_cidr
   private_data_subnet_az2_cidr = var.private_data_subnet_az2_cidr
-
 }
