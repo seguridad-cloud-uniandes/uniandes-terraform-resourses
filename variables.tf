@@ -103,4 +103,3 @@ variable "image_tag" {
   description = "the docker image tag"
   type        = string
 }
-
