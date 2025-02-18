@@ -1,3 +1,5 @@
+
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -41,7 +43,7 @@ No resources.
 | <a name="input_public_subnet_az1_cidr"></a> [public\_subnet\_az1\_cidr](#input\_public\_subnet\_az1\_cidr) | public subnet az1 cidr block | `string` | n/a | yes |
 | <a name="input_public_subnet_az2_cidr"></a> [public\_subnet\_az2\_cidr](#input\_public\_subnet\_az2\_cidr) | public subnet az2 cidr block | `string` | n/a | yes |
 | <a name="input_publicly_accessible"></a> [publicly\_accessible](#input\_publicly\_accessible) | controls if instance is publicly accessible | `bool` | n/a | yes |
-| <a name="input_region"></a> [region](#input\_region) | region to create resources | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | region to create resources on AWS | `string` | n/a | yes |
 | <a name="input_secrets_manager_secret_name"></a> [secrets\_manager\_secret\_name](#input\_secrets\_manager\_secret\_name) | the secrets manager secret name | `string` | n/a | yes |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | vpc cidr block | `string` | n/a | yes |
 

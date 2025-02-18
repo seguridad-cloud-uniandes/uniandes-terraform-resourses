@@ -1,6 +1,6 @@
 # environment variables
 variable "region" {
-  description = "region to create resources"
+  description = "region to create resources on AWS"
   type        = string
 }
 
