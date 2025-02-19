@@ -1,6 +1,6 @@
 # S3 Bucket for Terraform state
 resource "aws_s3_bucket" "terraform_state" {
-  bucket = "infraestructura-uniandes"
+  bucket = "infraestructura-pocblog"
 
   lifecycle {
     prevent_destroy = true
@@ -22,7 +22,7 @@ resource "aws_s3_bucket_versioning" "versioning" {
 
 # DynamoDB Table for state locking
 resource "aws_dynamodb_table" "state_lock_table" {
-  name         = "uniandes-locks"
+  name         = "pocblog-locks"
   billing_mode = "PAY_PER_REQUEST"
   hash_key     = "LockID"
 
