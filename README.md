@@ -1,4 +1,8 @@
+# BLOG CLOUD SECURITY
 
+## Architecture
+
+![Architecture](./docs/cloud_Security_blog.png)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -51,3 +55,8 @@ No resources.
 
 No outputs.
 <!-- END_TF_DOCS -->
+
+## Authors
+- Yeimy Valencia
+- Oscar Giraldo
+- Nicolás Pico García
