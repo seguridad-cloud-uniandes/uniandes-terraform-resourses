@@ -1,19 +1,3 @@
-# Configure the AWS Provider
-provider "aws" {
-  region = "us-east-1"
-}
-
-
-terraform {
-  required_version = ">=1.4.0"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = ">=1.4.0"
-    }
-  }
-}
-
 # S3 Bucket for Terraform state
 resource "aws_s3_bucket" "terraform_state" {
   bucket = "infraestructura-uniandes"
@@ -35,7 +19,6 @@ resource "aws_s3_bucket_versioning" "versioning" {
     status = "Enabled"
   }
 }
-
 
 # DynamoDB Table for state locking
 resource "aws_dynamodb_table" "state_lock_table" {
