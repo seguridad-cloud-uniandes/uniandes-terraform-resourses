@@ -75,7 +75,7 @@ resource "aws_lb_listener" "alb_https_listener" {
   port              = 443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:us-east-1:194722419096:certificate/a9f49a83-e499-44fd-af97-87324ee88d8e"
+  certificate_arn   = "arn:aws:acm:us-east-1:880616236833:certificate/f63fc8f0-5834-43cc-891e-77f469bd5e77"
 
   default_action {
     type             = "forward"
@@ -89,7 +89,7 @@ resource "aws_lb_listener" "alb_https_listener_8443" {
   port              = 8443
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = "arn:aws:acm:us-east-1:194722419096:certificate/a9f49a83-e499-44fd-af97-87324ee88d8e"
+  certificate_arn   = "arn:aws:acm:us-east-1:880616236833:certificate/f63fc8f0-5834-43cc-891e-77f469bd5e77"
 
   default_action {
     type             = "forward"
