@@ -150,3 +150,27 @@ resource "aws_security_group" "database_security_group" {
     Name = "${var.project_name}-${var.environment}-database-sg"
   }
 }
+
+
+# create security group for the internal application load balancer
+resource "aws_security_group" "internal_alb_security_group" {
+  name        = "${var.project_name}-${var.environment}-internal-alb-sg"
+  description = "enable https access on port 8443"
+  vpc_id      = aws_vpc.vpc.id
+
+  ingress {
+    description = "https access"
+    from_port   = 8443
+    to_port     = 8443
+    protocol    = "tcp"
+    cidr_blocks = ["10.0.0.0/16"]
+  }
+
+  egress {
+    description = "allow all outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
