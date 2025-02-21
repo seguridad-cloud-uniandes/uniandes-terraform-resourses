@@ -25,4 +25,5 @@ resource "aws_db_instance" "database_instance" {
   availability_zone      = data.aws_availability_zones.available_zones.names[0]
   skip_final_snapshot    = true
   publicly_accessible    = var.publicly_accessible
+  iam_database_authentication_enabled = true
 }
