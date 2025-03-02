@@ -26,6 +26,7 @@
 <!-- BEGIN_TF_DOCS -->
 ## Descripción del Proyecto
 POCBlog es una aplicación web desplegada en la nube de AWS que permite la gestión de blogs con funcionalidades de autenticación, creación, edición, eliminación y calificación de entradas. El proyecto se enfoca en la implementación de buenas prácticas de seguridad para proteger los datos de los usuarios y las comunicaciones.
+
 Este repositorio contiene la infraestructura como código para la aplicación **POCBlog**, implementada con **Terraform** para la creación y gestión de recursos en AWS. La arquitectura incluye balanceadores de carga, grupos de escalado automático, bases de datos RDS, subredes, y más
 
 ---
@@ -104,7 +105,7 @@ terraform apply
 - **IAM Roles y Policies**: Permisos para servicios AWS.
 - **Security Groups**: Control de tráfico de red.
 
-## Backend de Estado
+## Backend de estado
 La configuración de estado remoto se gestiona con S3 y bloqueo con DynamoDB.
 **Configuración**
 - S3 Bucket: `infraestructura-pocblog`
@@ -135,7 +136,7 @@ region       = "us-east-1"
 - **Secrets Manage**r: Gestiona credenciales sensibles como contraseñas de bases de datos, accesibles solo desde ECS.
 
 ---
-## Arquitectura de la Solución
+## Arquitectura de la solución
 
 ### Diagrama de Arquitectura
 ![Architecture](./docs/cloud_Security_blog.png)
@@ -231,16 +232,6 @@ La arquitectura se ha diseñado con los siguientes componentes:
 - La infraestructura como código con Terraform permite la replicabilidad y consistencia.
 - La observabilidad es clave para la detección temprana de problemas.
 
-## Modules
-
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_components"></a> [components](#module\_components) | ./components | n/a |
-
-## Resources
-
-No resources.
-
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -266,9 +257,6 @@ No resources.
 | <a name="input_secrets_manager_secret_name"></a> [secrets\_manager\_secret\_name](#input\_secrets\_manager\_secret\_name) | the secrets manager secret name | `string` | n/a | yes |
 | <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | vpc cidr block | `string` | n/a | yes |
 
-## Outputs
-
-No outputs.
 <!-- END_TF_DOCS -->
 
 ## Authors
