@@ -26,8 +26,8 @@
 <!-- BEGIN_TF_DOCS -->
 ## Descripción del Proyecto
 POCBlog es una aplicación web desplegada en la nube de AWS que permite la gestión de blogs con funcionalidades de autenticación, creación, edición, eliminación y calificación de entradas. El proyecto se enfoca en la implementación de buenas prácticas de seguridad para proteger los datos de los usuarios y las comunicaciones.
-
 Este repositorio contiene la infraestructura como código para la aplicación **POCBlog**, implementada con **Terraform** para la creación y gestión de recursos en AWS. La arquitectura incluye balanceadores de carga, grupos de escalado automático, bases de datos RDS, subredes, y más
+
 ---
 
 ## Terraform Infrastructure
@@ -43,7 +43,14 @@ Este repositorio contiene la infraestructura como código para la aplicación **
 ---
 
 ## Estructura del Proyecto
-Módulos de Terraform para los recursos
+### Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_components"></a> [components](#module\_components) | ./components | n/a |
+| <a name="module_tfstate"></a> [components](#module\_tfstate) | ./tfstate | n/a |
+
+A continuación se describen los módulos utilizados en Terraform para el uso de los recursos:
 
 ### Components
 Contiene los módulos individuales que definen los recursos de AWS:
@@ -54,7 +61,7 @@ Contiene los módulos individuales que definen los recursos de AWS:
 - Almacenamiento S3 - **s3.tf** usado para la configuración del almacenamiento en Amazon S3 para archivos como variables de entorno.        
 - Variables - **variables.tf** usado para para las variables que se utilizan para parametrizar el despliegue. 
 
-Configuración para almacenamiento remoto del estado
+Esta es la configuración de los recursos para el almacenamiento remoto del estado:
 ### tfstate
 Almacena la configuración para gestionar el estado remoto de **Terraform**, que permite que varios usuarios trabajen en la misma infraestructura sin conflictos.        
 - Configuración principal - **main.tf** usado para el archivo principal que orquesta la creación de los recursos llamando a los módulos definidos en components.        
@@ -104,8 +111,7 @@ La configuración de estado remoto se gestiona con S3 y bloqueo con DynamoDB.
 - DynamoDB Table: `pocblog-locks`
 
 ## Variables
-Las variables de entorno están definidas en **variables.tf** y se asignan en **terraform.tfvars**. 
-Ejemplos:
+Las variables de entorno están definidas en **variables.tf** y se asignan en **terraform.tfvars**. Estos son algunos ejemplos:
 ```bash
 project_name = "pocblog"
 environment  = "dev"
@@ -120,18 +126,13 @@ region       = "us-east-1"
 - Grupos de seguridad para restringir tráfico.
 - **AuthContext** usando **React Context API**.
 
-## Comunicación entre Recursos
-1. **VPC y Subredes**: La VPC contiene subredes públicas y privadas para separar la infraestructura en capas seguras.
-
-2. **ALB (Application Load Balancer)**: Distribuye tráfico entrante a los contenedores ECS que se ejecutan dentro de las subredes privadas.
-
-3. **ECS (Elastic Container Service)**: Ejecuta contenedores Docker con la aplicación, utilizando el modo de red awsvpc para integrarse con las subredes privadas.
-
-4. **RDS (Relational Database Service)**: La base de datos PostgreSQL está ubicada en las subredes privadas y solo acepta tráfico desde los contenedores ECS.
-
-5. **S3**: Almacena archivos de configuración y variables de entorno, con acceso restringido a través de IAM Policies.
-
-6. **Secrets Manage**r: Gestiona credenciales sensibles como contraseñas de bases de datos, accesibles solo desde ECS.
+## Comunicación entre recursos
+- **VPC y Subredes**: La VPC contiene subredes públicas y privadas para separar la infraestructura en capas seguras.
+- **ALB (Application Load Balancer)**: Distribuye tráfico entrante a los contenedores ECS que se ejecutan dentro de las subredes privadas.
+- **ECS (Elastic Container Service)**: Ejecuta contenedores Docker con la aplicación, utilizando el modo de red awsvpc para integrarse con las subredes privadas.
+- **RDS (Relational Database Service)**: La base de datos PostgreSQL está ubicada en las subredes privadas y solo acepta tráfico desde los contenedores ECS.
+- **S3**: Almacena archivos de configuración y variables de entorno, con acceso restringido a través de IAM Policies.
+- **Secrets Manage**r: Gestiona credenciales sensibles como contraseñas de bases de datos, accesibles solo desde ECS.
 
 ---
 ## Arquitectura de la Solución
@@ -170,28 +171,28 @@ La arquitectura se ha diseñado con los siguientes componentes:
 - Token de autenticación seguro para la integración con Grafana.
 
 ## Configuración de la Infraestructura
-1. **Frontend**:
+**Frontend**:
 - Balanceador público con HTTPS:443.
 - Certificado vinculado para la capa de transporte segura.
 
-2. **Backend**:
+**Backend**:
 - Comunicación interna HTTPS:8443.
 - Logs almacenados para análisis de peticiones.
 - Escalamiento automático basado en carga de CPU.
 
-3. **Base de Datos**:
+**Base de Datos**:
 - PostgreSQL con acceso restringido a través de IAM Roles.
 - Réplica de lectura para mejorar la disponibilidad.
 
-4. **Almacenamiento**:
+**Almacenamiento**:
 - Amazon S3 para almacenamiento de objetos estáticos y backups.
 
-5. **Redes**:
+**Redes**:
 - VPC con subredes públicas y privadas.
 - NAT Gateway para acceso seguro a internet desde las subredes privadas.
 - Internet Gateway para la salida controlada a internet.
 
-6. **Observabilidad**
+**Observabilidad**
 - La aplicación utiliza Grafana para la supervisión del rendimiento de los servicios ECS y la base de datos RDS.
 - La integración con Grafana se realiza mediante tokens seguros almacenados en AWS Secret Manager.
 
