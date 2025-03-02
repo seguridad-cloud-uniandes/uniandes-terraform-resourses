@@ -27,6 +27,8 @@
 ## Descripción del Proyecto
 POCBlog es una aplicación web desplegada en la nube de AWS que permite la gestión de blogs con funcionalidades de autenticación, creación, edición, eliminación y calificación de entradas. El proyecto se enfoca en la implementación de buenas prácticas de seguridad para proteger los datos de los usuarios y las comunicaciones.
 
+![POCBlog](./docs/POCBlog.png)
+
 Este repositorio contiene la infraestructura como código para la aplicación **POCBlog**, implementada con **Terraform** para la creación y gestión de recursos en AWS. La arquitectura incluye balanceadores de carga, grupos de escalado automático, bases de datos RDS, subredes, y más
 
 ---
