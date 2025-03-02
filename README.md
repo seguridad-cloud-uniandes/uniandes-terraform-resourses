@@ -27,7 +27,7 @@
 ## Descripción del Proyecto
 POCBlog es una aplicación web desplegada en la nube de AWS que permite la gestión de blogs con funcionalidades de autenticación, creación, edición, eliminación y calificación de entradas. El proyecto se enfoca en la implementación de buenas prácticas de seguridad para proteger los datos de los usuarios y las comunicaciones.
 
-Este repositorio contiene la infraestructura como código para la aplicación **POCBlog**, implementada con **Terraform** para la creación y gestión de recursos en AWS. La arquitectura incluye balanceadores de carga, grupos de escalado automático, bases de datos RDS, subredes, y más.
+Este repositorio contiene la infraestructura como código para la aplicación **POCBlog**, implementada con **Terraform** para la creación y gestión de recursos en AWS. La arquitectura incluye balanceadores de carga, grupos de escalado automático, bases de datos RDS, subredes, y más
 ---
 
 ## Terraform Infrastructure
@@ -45,7 +45,7 @@ Este repositorio contiene la infraestructura como código para la aplicación **
 ## Estructura del Proyecto
 Módulos de Terraform para los recursos
 
-# Components
+### Components
 Contiene los módulos individuales que definen los recursos de AWS:
 - Application Load Balancer - **alb.tf** usado para la configuración del Application Load Balancer (ALB) para distribuir tráfico.       
 - Cluster ECS - **ecs.tf** usado para la creación del clúster ECS y servicios para ejecutar contenedores.       
@@ -54,7 +54,7 @@ Contiene los módulos individuales que definen los recursos de AWS:
 - Almacenamiento S3 - **s3.tf** usado para la configuración del almacenamiento en Amazon S3 para archivos como variables de entorno.        
 - Variables - **variables.tf** usado para para las variables que se utilizan para parametrizar el despliegue. 
 
-### Configuración para almacenamiento remoto del estado
+#### Configuración para almacenamiento remoto del estado
 # tfstate
 Almacena la configuración para gestionar el estado remoto de **Terraform**, que permite que varios usuarios trabajen en la misma infraestructura sin conflictos.        
 - Configuración principal - **main.tf** usado para el archivo principal que orquesta la creación de los recursos llamando a los módulos definidos en components.        
