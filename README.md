@@ -20,19 +20,15 @@
   - [Decisiones de diseño](#decisiones-de-diseño)
   - [Decisiones de seguridad](#decisiones-de-seguridad)
   - [Estimaciones de costos](#estimaciones-de-costos)
-  [Conlusiones y lecciones aprendidas](#conclusiones-y-lecciones-aprendidas)
+- [Conclusiones y lecciones aprendidas](#conclusiones-y-lecciones-aprendidas)
 ---
 
-## Architecture
-
-![Architecture](./docs/cloud_Security_blog.png)
-
 <!-- BEGIN_TF_DOCS -->
-
 ## Descripción del Proyecto
 POCBlog es una aplicación web desplegada en la nube de AWS que permite la gestión de blogs con funcionalidades de autenticación, creación, edición, eliminación y calificación de entradas. El proyecto se enfoca en la implementación de buenas prácticas de seguridad para proteger los datos de los usuarios y las comunicaciones.
 
 Este repositorio contiene la infraestructura como código para la aplicación **POCBlog**, implementada con **Terraform** para la creación y gestión de recursos en AWS. La arquitectura incluye balanceadores de carga, grupos de escalado automático, bases de datos RDS, subredes, y más.
+---
 
 ## Terraform Infrastructure
 ### Requisitos
@@ -44,6 +40,7 @@ Este repositorio contiene la infraestructura como código para la aplicación **
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.4.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=1.4.0 |
+---
 
 ## Estructura del Proyecto
 Módulos de Terraform para los recursos
@@ -172,7 +169,6 @@ La arquitectura se ha diseñado con los siguientes componentes:
 - Grafana para monitoreo de métricas y logs.
 - Token de autenticación seguro para la integración con Grafana.
 
----
 ## Configuración de la Infraestructura
 1. **Frontend**:
 - Balanceador público con HTTPS:443.
@@ -227,6 +223,7 @@ La arquitectura se ha diseñado con los siguientes componentes:
 - Grafana Cloud: Monitoreo de métricas y logs.
 - AWS WAF: Protección ante ataques de red.
 
+---
 ## Conclusiones y lecciones aprendidas
 - La automatización de la infraestructura facilita la gestión y el despliegue.
 - La aplicación del principio de mínimo privilegio mejora la seguridad.
