@@ -7,22 +7,20 @@
 - [Descripción del proyecto](#descripción-del-proyecto)
 - [Terraform infrastructure](#terraform-infrastructure)
   - [Requisitos](#requisitos)
-  - [Estructura del proyecto](#estructura-del-proyecto)
+- [Estructura del proyecto](#estructura-del-proyecto)
   - [Configuración](#configuración)
   - [Despliegue](#despliegue)
   - [Componentes principales](#componentes-principales)
   - [Backend de estado](#backend-de-estado)
   - [Variables](#variables)
   - [Seguridad](#seguridad)
-- [Base de datos](#base-de-datos)
-- [Frontend](#frontend)
-  - [Instalación](#instalación-frontend)
-  - [Componentes Principales](#componentes-principales)
-  - [Páginas](#páginas)
-  - [Contexto](#contexto)
-- [Cómo Ejecutar el Proyecto](#cómo-ejecutar-el-proyecto)
-- [Contacto](#contacto)
-
+  - [Comunicación entre recursos](#comunicación-entre-recursos)
+- [Arquitectura de solución](#arquitectura-de-solución)
+  - [Configuración de la infraestructura](#configuración-de-la-infraestructura)
+  - [Decisiones de diseño](#decisiones-de-diseño)
+  - [Decisiones de seguridad](#decisiones-de-seguridad)
+  - [Estimaciones de costos](#estimaciones-de-costos)
+  [Conlusiones y lecciones aprendidas](#conclusiones-y-lecciones-aprendidas)
 ---
 
 ## Architecture
@@ -48,34 +46,25 @@ Este repositorio contiene la infraestructura como código para la aplicación **
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=1.4.0 |
 
 ## Estructura del Proyecto
+Módulos de Terraform para los recursos
 
-### Módulos de Terraform para los recursos
-# components
+# Components
 Contiene los módulos individuales que definen los recursos de AWS:
-- Application Load Balancer
-  **alb.tf**: Configuración del Application Load Balancer (ALB) para distribuir tráfico.       
-- Cluster ECS
-  **ecs.tf**: Creación del clúster ECS y servicios para ejecutar contenedores.       
-- RDS Database
-  **rds.tf**: Configuración de la base de datos RDS para PostgreSQL.       
-- Grupos de Seguridad
-  **security-group.tf**: Definición de grupos de seguridad para controlar el tráfico de red.
-- Almacenamiento S3
-  **s3.tf**: Configuración del almacenamiento en Amazon S3 para archivos como variables de entorno.        
-- Variables
-  **variables.tf**: Variables que se utilizan para parametrizar el despliegue. 
+- Application Load Balancer - **alb.tf** usado para la configuración del Application Load Balancer (ALB) para distribuir tráfico.       
+- Cluster ECS - **ecs.tf** usado para la creación del clúster ECS y servicios para ejecutar contenedores.       
+- RDS Database - **rds.tf** usado para la configuración de la base de datos RDS para PostgreSQL. 
+- Grupos de Seguridad - **security-group.tf** usado para la definición de grupos de seguridad para controlar el tráfico de red.
+- Almacenamiento S3 - **s3.tf** usado para la configuración del almacenamiento en Amazon S3 para archivos como variables de entorno.        
+- Variables - **variables.tf** usado para para las variables que se utilizan para parametrizar el despliegue. 
 
-## Configuración para almacenamiento remoto del estado
+### Configuración para almacenamiento remoto del estado
 # tfstate
 Almacena la configuración para gestionar el estado remoto de **Terraform**, que permite que varios usuarios trabajen en la misma infraestructura sin conflictos.        
-- Configuración principal
-  **main.tf**: Archivo principal que orquesta la creación de los recursos llamando a los módulos definidos en components.        
-- Valores de variables
-  **terraform.tfvars**: Archivo donde se definen los valores concretos de las variables que se usan en los módulos, como nombres de recursos, CIDR de VPC, o configuración de RDS.
-- Configuración de proveedores
-  **provider.tf**: Define los proveedores que se utilizarán, en este caso, AWS.      
+- Configuración principal - **main.tf** usado para el archivo principal que orquesta la creación de los recursos llamando a los módulos definidos en components.        
+- Valores de variables - **terraform.tfvars** usado para el archivo donde se definen los valores concretos de las variables que se usan en los módulos, como nombres de recursos, CIDR de VPC, o configuración de RDS.
+- Configuración de proveedores - **provider.tf** usado para definir los proveedores que se utilizarán, en este caso, AWS.      
 
-### Configuración
+## Configuración
 1. Configura las credenciales de AWS con el siguiente comando:
    ```bash
    aws configure
@@ -83,7 +72,7 @@ Almacena la configuración para gestionar el estado remoto de **Terraform**, que
 2. Define las variables necesarias en el archivo `terraform.tfvars`.
 3. Modifica las variables del entorno si es necesario.
 
-### Despliegue
+## Despliegue
 
 **Inicializar el Proyecto**
 ```bash
@@ -102,7 +91,7 @@ terraform plan
 terraform apply
 ```
 
-### Componentes principales
+## Componentes principales
 - **VPC**: Red privada virtual para la infraestructura.
 - **ALB (Application Load Balancer)**: Balanceo de carga para distribuir tráfico.
 - **ECS (Elastic Container Service)**: Ejecución de contenedores Docker.
@@ -111,13 +100,13 @@ terraform apply
 - **IAM Roles y Policies**: Permisos para servicios AWS.
 - **Security Groups**: Control de tráfico de red.
 
-### Backend de Estado
+## Backend de Estado
 La configuración de estado remoto se gestiona con S3 y bloqueo con DynamoDB.
 **Configuración**
 - S3 Bucket: `infraestructura-pocblog`
 - DynamoDB Table: `pocblog-locks`
 
-### Variables
+## Variables
 Las variables de entorno están definidas en **variables.tf** y se asignan en **terraform.tfvars**. 
 Ejemplos:
 ```bash
@@ -127,14 +116,14 @@ vpc_cidr     = "10.0.0.0/16"
 region       = "us-east-1"
 ```
 
-### Seguridad
+## Seguridad
 - Cifrado de secretos con **AWS Secrets Manager**.
 - Roles de IAM con permisos mínimos necesarios.
 - Buckets S3 con versionado habilitado.
 - Grupos de seguridad para restringir tráfico.
 - **AuthContext** usando **React Context API**.
 
-### Comunicación entre Recursos
+## Comunicación entre Recursos
 1. **VPC y Subredes**: La VPC contiene subredes públicas y privadas para separar la infraestructura en capas seguras.
 
 2. **ALB (Application Load Balancer)**: Distribuye tráfico entrante a los contenedores ECS que se ejecutan dentro de las subredes privadas.
@@ -147,12 +136,12 @@ region       = "us-east-1"
 
 6. **Secrets Manage**r: Gestiona credenciales sensibles como contraseñas de bases de datos, accesibles solo desde ECS.
 
-
-
 ---
 ## Arquitectura de la Solución
 
 ### Diagrama de Arquitectura
+![Architecture](./docs/cloud_Security_blog.png)
+
 La arquitectura se ha diseñado con los siguientes componentes:
 
 **Frontend**:
@@ -184,7 +173,7 @@ La arquitectura se ha diseñado con los siguientes componentes:
 - Token de autenticación seguro para la integración con Grafana.
 
 ---
-### Configuración de la Infraestructura
+## Configuración de la Infraestructura
 1. **Frontend**:
 - Balanceador público con HTTPS:443.
 - Certificado vinculado para la capa de transporte segura.
@@ -206,24 +195,30 @@ La arquitectura se ha diseñado con los siguientes componentes:
 - NAT Gateway para acceso seguro a internet desde las subredes privadas.
 - Internet Gateway para la salida controlada a internet.
 
-### Decisiones de Diseño
+6. **Observabilidad**
+- La aplicación utiliza Grafana para la supervisión del rendimiento de los servicios ECS y la base de datos RDS.
+- La integración con Grafana se realiza mediante tokens seguros almacenados en AWS Secret Manager.
+
+## Decisiones de diseño
 - Uso de JWT para la autenticación segura de usuarios.
 - Implementación de FastAPI para el backend por su eficiencia y rapidez.
-- Escalabilidad automática con ECS Fargate.
+- Escalabilidad automática con ECS Fargate mediante el uso de Auto Scaling Groups para ECS con políticas de escalado basadas en la utilización de CPU.
 - Uso de CloudFront para la distribución global de contenido.
 - Observabilidad con Grafana para la supervisión en tiempo real.
 - La estructura modular seleccionada permite reutilizar y organizar mejor los recursos, además de facilitar el mantenimiento y la escalabilidad.
+- Despliegue en capas por el uso de VPC con subredes públicas y privadas para segmentar los recursos por nivel de seguridad.
+- Alta disponibilidad con la implementación de RDS en modo multi-AZ (cuando se configura) para garantizar la disponibilidad de la base de datos.
+- Gestión de estados mediante el uso de S3 para almacenamiento de estado remoto y DynamoDB para bloqueo de estados concurrentes.
 
-## Seguridad
+## Decisiones de seguridad
 - Validación estricta de entradas para prevenir inyecciones SQL.
 - Comunicación cifrada entre todos los componentes con HTTPS.
-- Principio de mínimo privilegio para los roles IAM.
+- Principio de mínimo privilegio para los roles IAM con los permisos mínimos necesarios para cada servicio.
 - AWS WAF para proteger contra ataques de denegación de servicio y vulnerabilidades conocidas.
 - Gestión segura de secretos con AWS Secret Manager.
-
-## Observabilidad
-La aplicación utiliza Grafana para la supervisión del rendimiento de los servicios ECS y la base de datos RDS.
-La integración con Grafana se realiza mediante tokens seguros almacenados en AWS Secret Manager.
+- Seguridad por defecto porque las subredes privadas no permiten acceso público directo.
+- Respaldo de configuración por el versionado habilitado en los buckets S3.
+- Protección de estado con DynamoDB que bloquea los cambios simultáneos para evitar corrupción de datos.
 
 ## Estimaciones de Costo
 - Amazon CloudFront: Distribución global de contenido.
@@ -232,7 +227,7 @@ La integración con Grafana se realiza mediante tokens seguros almacenados en AW
 - Grafana Cloud: Monitoreo de métricas y logs.
 - AWS WAF: Protección ante ataques de red.
 
-## Conclusiones y Lecciones Aprendidas
+## Conclusiones y lecciones aprendidas
 - La automatización de la infraestructura facilita la gestión y el despliegue.
 - La aplicación del principio de mínimo privilegio mejora la seguridad.
 - La infraestructura como código con Terraform permite la replicabilidad y consistencia.
