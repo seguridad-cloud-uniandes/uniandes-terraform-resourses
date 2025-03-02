@@ -48,18 +48,31 @@ Este repositorio contiene la infraestructura como código para la aplicación **
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=1.4.0 |
 
 ### Estructura del Proyecto
-.
-├── components        # Módulos de Terraform para los recursos
-│   ├── alb.tf       # Application Load Balancer
-│   ├── ecs.tf       # Cluster ECS
-│   ├── rds.tf       # RDS Database
-│   ├── security-group.tf # Grupos de Seguridad
-│   ├── s3.tf        # Almacenamiento S3
-│   └── variables.tf # Variables
-├── tfstate          # Configuración para almacenamiento remoto del estado
-├── main.tf          # Configuración principal
-├── terraform.tfvars # Valores de variables
-└── provider.tf      # Configuración de proveedore
+Esta estructura modular permite reutilizar y organizar mejor los recursos, además de facilitar el mantenimiento y la escalabilidad.
+
+## Módulos de Terraform para los recursos
+**components**: Contiene los módulos individuales que definen los recursos de AWS:
+# Application Load Balancer
+- alb.tf: Configuración del Application Load Balancer (ALB) para distribuir tráfico.       
+# Cluster ECS
+- ecs.tf: Creación del clúster ECS y servicios para ejecutar contenedores.       
+# RDS Database
+- rds.tf: Configuración de la base de datos RDS para PostgreSQL.       
+# Grupos de Seguridad
+- security-group.tf: Definición de grupos de seguridad para controlar el tráfico de red.
+# Almacenamiento S3
+- s3.tf: Configuración del almacenamiento en Amazon S3 para archivos como variables de entorno.        
+# Variables
+- variables.tf: Variables que se utilizan para parametrizar el despliegue. 
+
+## Configuración para almacenamiento remoto del estado
+**tfstate**:  Almacena la configuración para gestionar el estado remoto de **Terraform**, que permite que varios usuarios trabajen en la misma infraestructura sin conflictos.        
+# Configuración principal
+- main.tf: Archivo principal que orquesta la creación de los recursos llamando a los módulos definidos en components.        
+# Valores de variables
+- terraform.tfvars: Archivo donde se definen los valores concretos de las variables que se usan en los módulos, como nombres de recursos, CIDR de VPC, o configuración de RDS.
+# Configuración de proveedores
+- provider.tf: Define los proveedores que se utilizarán, en este caso, AWS.      
 
 ### Configuración
 1. Configura las credenciales de AWS con el siguiente comando:
@@ -119,6 +132,21 @@ region       = "us-east-1"
 - Buckets S3 con versionado habilitado.
 - Grupos de seguridad para restringir tráfico.
 - **AuthContext** usando **React Context API**.
+
+### Comunicación entre Recursos
+1. **VPC y Subredes**: La VPC contiene subredes públicas y privadas para separar la infraestructura en capas seguras.
+
+2. **ALB (Application Load Balancer)**: Distribuye tráfico entrante a los contenedores ECS que se ejecutan dentro de las subredes privadas.
+
+3. **ECS (Elastic Container Service)**: Ejecuta contenedores Docker con la aplicación, utilizando el modo de red awsvpc para integrarse con las subredes privadas.
+
+4. **RDS (Relational Database Service)**: La base de datos PostgreSQL está ubicada en las subredes privadas y solo acepta tráfico desde los contenedores ECS.
+
+5. **S3**: Almacena archivos de configuración y variables de entorno, con acceso restringido a través de IAM Policies.
+
+6. **Secrets Manage**r: Gestiona credenciales sensibles como contraseñas de bases de datos, accesibles solo desde ECS.
+
+
 
 ---
 ## Arquitectura de la Solución
@@ -183,6 +211,7 @@ La arquitectura se ha diseñado con los siguientes componentes:
 - Escalabilidad automática con ECS Fargate.
 - Uso de CloudFront para la distribución global de contenido.
 - Observabilidad con Grafana para la supervisión en tiempo real.
+- La estructura modular seleccionada permite reutilizar y organizar mejor los recursos, además de facilitar el mantenimiento y la escalabilidad.
 
 ## Seguridad
 - Validación estricta de entradas para prevenir inyecciones SQL.
@@ -202,7 +231,7 @@ La integración con Grafana se realiza mediante tokens seguros almacenados en AW
 - Grafana Cloud: Monitoreo de métricas y logs.
 - AWS WAF: Protección ante ataques de red.
 
-### Conclusiones y Lecciones Aprendidas
+## Conclusiones y Lecciones Aprendidas
 - La automatización de la infraestructura facilita la gestión y el despliegue.
 - La aplicación del principio de mínimo privilegio mejora la seguridad.
 - La infraestructura como código con Terraform permite la replicabilidad y consistencia.
