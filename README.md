@@ -54,8 +54,8 @@ Contiene los módulos individuales que definen los recursos de AWS:
 - Almacenamiento S3 - **s3.tf** usado para la configuración del almacenamiento en Amazon S3 para archivos como variables de entorno.        
 - Variables - **variables.tf** usado para para las variables que se utilizan para parametrizar el despliegue. 
 
-#### Configuración para almacenamiento remoto del estado
-# tfstate
+Configuración para almacenamiento remoto del estado
+### tfstate
 Almacena la configuración para gestionar el estado remoto de **Terraform**, que permite que varios usuarios trabajen en la misma infraestructura sin conflictos.        
 - Configuración principal - **main.tf** usado para el archivo principal que orquesta la creación de los recursos llamando a los módulos definidos en components.        
 - Valores de variables - **terraform.tfvars** usado para el archivo donde se definen los valores concretos de las variables que se usan en los módulos, como nombres de recursos, CIDR de VPC, o configuración de RDS.
