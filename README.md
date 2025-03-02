@@ -47,32 +47,33 @@ Este repositorio contiene la infraestructura como código para la aplicación **
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >=1.4.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >=1.4.0 |
 
-### Estructura del Proyecto
-Esta estructura modular permite reutilizar y organizar mejor los recursos, además de facilitar el mantenimiento y la escalabilidad.
+## Estructura del Proyecto
 
-## Módulos de Terraform para los recursos
-**components**: Contiene los módulos individuales que definen los recursos de AWS:
-# Application Load Balancer
-- alb.tf: Configuración del Application Load Balancer (ALB) para distribuir tráfico.       
-# Cluster ECS
-- ecs.tf: Creación del clúster ECS y servicios para ejecutar contenedores.       
-# RDS Database
-- rds.tf: Configuración de la base de datos RDS para PostgreSQL.       
-# Grupos de Seguridad
-- security-group.tf: Definición de grupos de seguridad para controlar el tráfico de red.
-# Almacenamiento S3
-- s3.tf: Configuración del almacenamiento en Amazon S3 para archivos como variables de entorno.        
-# Variables
-- variables.tf: Variables que se utilizan para parametrizar el despliegue. 
+### Módulos de Terraform para los recursos
+# components
+Contiene los módulos individuales que definen los recursos de AWS:
+- Application Load Balancer
+  **alb.tf**: Configuración del Application Load Balancer (ALB) para distribuir tráfico.       
+- Cluster ECS
+  **ecs.tf**: Creación del clúster ECS y servicios para ejecutar contenedores.       
+- RDS Database
+  **rds.tf**: Configuración de la base de datos RDS para PostgreSQL.       
+- Grupos de Seguridad
+  **security-group.tf**: Definición de grupos de seguridad para controlar el tráfico de red.
+- Almacenamiento S3
+  **s3.tf**: Configuración del almacenamiento en Amazon S3 para archivos como variables de entorno.        
+- Variables
+  **variables.tf**: Variables que se utilizan para parametrizar el despliegue. 
 
 ## Configuración para almacenamiento remoto del estado
-**tfstate**:  Almacena la configuración para gestionar el estado remoto de **Terraform**, que permite que varios usuarios trabajen en la misma infraestructura sin conflictos.        
-# Configuración principal
-- main.tf: Archivo principal que orquesta la creación de los recursos llamando a los módulos definidos en components.        
-# Valores de variables
-- terraform.tfvars: Archivo donde se definen los valores concretos de las variables que se usan en los módulos, como nombres de recursos, CIDR de VPC, o configuración de RDS.
-# Configuración de proveedores
-- provider.tf: Define los proveedores que se utilizarán, en este caso, AWS.      
+# tfstate
+Almacena la configuración para gestionar el estado remoto de **Terraform**, que permite que varios usuarios trabajen en la misma infraestructura sin conflictos.        
+- Configuración principal
+  **main.tf**: Archivo principal que orquesta la creación de los recursos llamando a los módulos definidos en components.        
+- Valores de variables
+  **terraform.tfvars**: Archivo donde se definen los valores concretos de las variables que se usan en los módulos, como nombres de recursos, CIDR de VPC, o configuración de RDS.
+- Configuración de proveedores
+  **provider.tf**: Define los proveedores que se utilizarán, en este caso, AWS.      
 
 ### Configuración
 1. Configura las credenciales de AWS con el siguiente comando:
