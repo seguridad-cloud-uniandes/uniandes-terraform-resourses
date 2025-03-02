@@ -32,6 +32,8 @@
 <!-- BEGIN_TF_DOCS -->
 
 ## Descripción del Proyecto
+POCBlog es una aplicación web desplegada en la nube de AWS que permite la gestión de blogs con funcionalidades de autenticación, creación, edición, eliminación y calificación de entradas. El proyecto se enfoca en la implementación de buenas prácticas de seguridad para proteger los datos de los usuarios y las comunicaciones.
+
 Este repositorio contiene la infraestructura como código para la aplicación **POCBlog**, implementada con **Terraform** para la creación y gestión de recursos en AWS. La arquitectura incluye balanceadores de carga, grupos de escalado automático, bases de datos RDS, subredes, y más.
 
 ## Terraform Infrastructure
@@ -75,7 +77,7 @@ terraform init
 ```
 **Validar la Configuración**
 ```bash
-terraform validate**
+terraform validate
 ```
 **Planificar el Despliegue**
 ```bash
@@ -116,20 +118,95 @@ region       = "us-east-1"
 - Roles de IAM con permisos mínimos necesarios.
 - Buckets S3 con versionado habilitado.
 - Grupos de seguridad para restringir tráfico.
+- **AuthContext** usando **React Context API**.
 
+---
+## Arquitectura de la Solución
 
+### Diagrama de Arquitectura
+La arquitectura se ha diseñado con los siguientes componentes:
 
+**Frontend**:
+- Desplegado en Amazon ECS con Fargate.
+- Gestionado por un Application Load Balancer (ALB) público.
+- Comunicación HTTPS con el backend mediante certificado de AWS Certificate Manager.
 
+**Backend**:
+- Microservicio desarrollado con FastAPI.
+- Desplegado en Amazon ECS con Fargate.
+- Balanceador interno (ALB) con comunicación HTTPS.
+- Autoescalamiento horizontal con umbral de CPU al 70%.
 
+**Base de Datos**:
+- Amazon RDS con motor PostgreSQL.
+- Réplica de lectura para mejorar la disponibilidad.
+- Gestión de credenciales con AWS Secret Manager.
 
+**Almacenamiento**:
+- Amazon S3 para archivos estáticos.
 
+**Seguridad**:
+- AWS WAF para protección contra ataques de denegación de servicio.
+- AWS Secret Manager para manejo seguro de credenciales.
+- Principio de mínimo privilegio con IAM Roles.
 
+**Observabilidad**:
+- Grafana para monitoreo de métricas y logs.
+- Token de autenticación seguro para la integración con Grafana.
 
+---
+### Configuración de la Infraestructura
+1. **Frontend**:
+- Balanceador público con HTTPS:443.
+- Certificado vinculado para la capa de transporte segura.
 
+2. **Backend**:
+- Comunicación interna HTTPS:8443.
+- Logs almacenados para análisis de peticiones.
+- Escalamiento automático basado en carga de CPU.
 
+3. **Base de Datos**:
+- PostgreSQL con acceso restringido a través de IAM Roles.
+- Réplica de lectura para mejorar la disponibilidad.
 
+4. **Almacenamiento**:
+- Amazon S3 para almacenamiento de objetos estáticos y backups.
 
+5. **Redes**:
+- VPC con subredes públicas y privadas.
+- NAT Gateway para acceso seguro a internet desde las subredes privadas.
+- Internet Gateway para la salida controlada a internet.
 
+### Decisiones de Diseño
+- Uso de JWT para la autenticación segura de usuarios.
+- Implementación de FastAPI para el backend por su eficiencia y rapidez.
+- Escalabilidad automática con ECS Fargate.
+- Uso de CloudFront para la distribución global de contenido.
+- Observabilidad con Grafana para la supervisión en tiempo real.
+
+## Seguridad
+- Validación estricta de entradas para prevenir inyecciones SQL.
+- Comunicación cifrada entre todos los componentes con HTTPS.
+- Principio de mínimo privilegio para los roles IAM.
+- AWS WAF para proteger contra ataques de denegación de servicio y vulnerabilidades conocidas.
+- Gestión segura de secretos con AWS Secret Manager.
+
+## Observabilidad
+La aplicación utiliza Grafana para la supervisión del rendimiento de los servicios ECS y la base de datos RDS.
+La integración con Grafana se realiza mediante tokens seguros almacenados en AWS Secret Manager.
+
+## Estimaciones de Costo
+- Amazon CloudFront: Distribución global de contenido.
+- Amazon Route 53: Gestión de dominio personalizado.
+- ECS Fargate: Despliegue de contenedores con autoescalado.
+- Grafana Cloud: Monitoreo de métricas y logs.
+- AWS WAF: Protección ante ataques de red.
+
+### Conclusiones y Lecciones Aprendidas
+- La automatización de la infraestructura facilita la gestión y el despliegue.
+- La aplicación del principio de mínimo privilegio mejora la seguridad.
+- La infraestructura como código con Terraform permite la replicabilidad y consistencia.
+- La observabilidad es clave para la detección temprana de problemas.
 
 ## Modules
 
