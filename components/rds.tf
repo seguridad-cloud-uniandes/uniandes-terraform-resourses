@@ -11,19 +11,24 @@ resource "aws_db_subnet_group" "database_subnet_group" {
 
 # create the rds instance
 resource "aws_db_instance" "database_instance" {
-  engine                 = "postgres"
-  engine_version         = "14.15"
-  multi_az               = var.multi_az_deployment
-  identifier             = var.database_instance_identifier
-  username               = local.secrets.username
-  password               = local.secrets.password
-  db_name                = local.secrets.rds_db_name
-  instance_class         = var.database_instance_class
-  allocated_storage      = 200
-  db_subnet_group_name   = aws_db_subnet_group.database_subnet_group.name
-  vpc_security_group_ids = [aws_security_group.database_security_group.id, aws_security_group.runner_security_group.id]
-  availability_zone      = data.aws_availability_zones.available_zones.names[0]
-  skip_final_snapshot    = true
-  publicly_accessible    = var.publicly_accessible
+  engine                              = "postgres"
+  engine_version                      = "14.15"
+  multi_az                            = var.multi_az_deployment
+  identifier                          = var.database_instance_identifier
+  username                            = local.secrets.username
+  password                            = local.secrets.password
+  db_name                             = local.secrets.rds_db_name
+  instance_class                      = var.database_instance_class
+  allocated_storage                   = 200
+  db_subnet_group_name                = aws_db_subnet_group.database_subnet_group.name
+  vpc_security_group_ids              = [aws_security_group.database_security_group.id, aws_security_group.runner_security_group.id]
+  availability_zone                   = data.aws_availability_zones.available_zones.names[0]
+  skip_final_snapshot                 = true
+  publicly_accessible                 = var.publicly_accessible
   iam_database_authentication_enabled = true
+  backup_retention_period             = 7
+
+  # Añadir encriptado
+  storage_encrypted = true
+  kms_key_id        = var.kms_key_id # Opcional: especificar una clave KMS personalizada
 }

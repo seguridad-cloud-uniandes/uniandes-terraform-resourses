@@ -77,6 +77,12 @@ variable "publicly_accessible" {
   type        = bool
 }
 
+variable "kms_key_id" {
+  description = "ID de la clave KMS para encriptar la RDS"
+  type        = string
+  default     = null
+}
+
 # s3 variables
 variable "env_file_bucket_name" {
   description = "s3 bucket name"

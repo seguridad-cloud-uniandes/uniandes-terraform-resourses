@@ -20,6 +20,7 @@ multi_az_deployment          = "false" # we are not creating a standby rds becau
 database_instance_identifier = "app-db"
 database_instance_class      = "db.t4g.micro"
 publicly_accessible          = "false"
+kms_key_id                   = "arn:aws:kms:us-east-1:880616236833:key/3aac93d8-6a3f-4165-a08d-c78a23ce12cb"
 
 # s3 variables
 env_file_bucket_name = "pocblog-app-env-file-bucket"

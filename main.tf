@@ -14,6 +14,7 @@ module "components" {
   database_instance_identifier = var.database_instance_identifier
   database_instance_class      = var.database_instance_class
   publicly_accessible          = var.publicly_accessible
+  kms_key_id                   = var.kms_key_id
 
   # s3 variables
   env_file_bucket_name = var.env_file_bucket_name
